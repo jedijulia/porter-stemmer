@@ -18,8 +18,8 @@ def isVowel(word, i):
     return not(isConsonant(word, i))
 
 # *s
-def endsWithS(stem):
-    if stem[-1] == 's':
+def endsWith(stem, letter):
+    if stem.endswith(letter):
         return True 
     else: 
         return False
