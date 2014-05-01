@@ -132,8 +132,11 @@ def step1b(word):
         pass
     return word
 
-
-
-
-
-        
+def step1c(word):
+    containsVowel
+    if word.endswith('y'):
+        base = word.rstrip('y')
+        if containsVowel(base):
+            word = base
+            word += 'i'
+    return word
