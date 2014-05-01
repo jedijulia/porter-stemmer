@@ -68,6 +68,7 @@ def getM(word):
     m = form.count('VC')
     return m
 
+# *o
 def cvc(word):
     if len(word) >= 3:
         f = -3
@@ -101,7 +102,35 @@ def step1a(word):
         pass
     return word
     
-
+def step1b(word):
+    flag = False
+    if word.endswith('eed'):
+        base = word.rstrip('eed')
+        if getM(base) > 0:
+            word = base
+            word += 'ee'
+    elif word.endswith('ed'):
+        base = word.rstrip('ed')
+        if containsVowel(base):
+            word = base
+            flag = True
+    elif word.endswith('ing'):
+        base = word.rstrip('ing')
+        if containsVowel(base):
+            word = base
+            flag = True
+    if flag:
+        if word.endswith('at') or word.endswith('bl') or word.endswith('iz'):
+            word += 'e'
+        elif doubleCons(word) and not endsWith(word, 'l') and not endsWith(word, 's') and not endsWith(word, 'z'):
+            word = word[:-1]
+        elif getM(word) == 1 and cvc(word):
+            word += 'e'
+        else:
+            pass
+    else:
+        pass
+    return word
 
 
 
