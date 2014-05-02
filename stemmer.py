@@ -191,3 +191,18 @@ def step2(word):
     elif word.endswith('biliti'):
         word = replace(word, 'biliti', 'ble')
     return word
+
+def step3(word):
+    if word.endswith('icate'):
+        word = replace(word, 'icate', 'ic')
+    elif word.endswith('ative'):
+        word = replace(word, 'ative', '')
+    elif word.endswith('alize'):
+        word = replace(word, 'alize', 'al')
+    elif word.endswith('iciti'):
+        word = replace(word, 'iciti', 'ic')
+    elif word.endswith('ful'):
+        word = replace(word, 'ful', '')
+    elif word.endswith('ness'):
+        word = replace(word, 'ness', '')
+    return word   
