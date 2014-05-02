@@ -94,6 +94,15 @@ def replace(orig, rem, rep):
     else:
         return orig
 
+def replaceM1(orig, rem, rep):
+    result = orig.rfind(rem)
+    base = orig[:result]
+    if getM(base) > 1:
+        replaced = base + rep
+        return replaced
+    else:
+        return orig
+
 def step1a(word):
     if word.endswith('sses'):
         word = word.rstrip('sses') 
