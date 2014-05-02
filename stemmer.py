@@ -85,6 +85,15 @@ def cvc(word):
     else: 
         return False
 
+def replace(orig, rem, rep):
+    result = orig.rfind(rem)
+    base = orig[:result]
+    if getM(base) > 0:
+        replaced = base + rep
+        return replaced
+    else:
+        return orig
+
 def step1a(word):
     if word.endswith('sses'):
         word = word.rstrip('sses') 
@@ -133,10 +142,52 @@ def step1b(word):
     return word
 
 def step1c(word):
-    containsVowel
     if word.endswith('y'):
         base = word.rstrip('y')
         if containsVowel(base):
             word = base
             word += 'i'
+    return word
+
+def step2(word):
+    if word.endswith('ational'):
+        word = replace(word, 'ational', 'ate')
+    elif word.endswith('tional'):
+        word = replace(word, 'tional', 'tion')
+    elif word.endswith('enci'):
+        word = replace(word, 'enci', 'ence')
+    elif word.endswith('anci'):
+        word = replace(word, 'anci', 'ance')
+    elif word.endswith('izer'):
+        word = replace(word, 'izer', 'ize')
+    elif word.endswith('abli'):
+        word = replace(word, 'abli', 'able')
+    elif word.endswith('alli'):
+        word = replace(word, 'alli', 'al')
+    elif word.endswith('entli'):
+        word = replace(word, 'entli', 'ent')
+    elif word.endswith('eli'):
+        word = replace(word, 'eli', 'e')
+    elif word.endswith('ousli'):
+        word = replace(word, 'ousli', 'ous')
+    elif word.endswith('ization'):
+        word = replace(word, 'ization', 'ize')
+    elif word.endswith('ation'):
+        word = replace(word, 'ation', 'ate')
+    elif word.endswith('ator'):
+        word = replace(word, 'ator', 'ate')
+    elif word.endswith('alism'):
+        word = replace(word, 'alism', 'al')
+    elif word.endswith('iveness'):
+        word = replace(word, 'iveness', 'ive')
+    elif word.endswith('fulness'):
+        word = replace(word, 'fulness', 'ful')
+    elif word.endswith('ousness'):
+        word = replace(word, 'ousness', 'ous')
+    elif word.endswith('aliti'):
+        word = replace(word, 'aliti', 'al')
+    elif word.endswith('iviti'):
+        word = replace(word, 'iviti', 'ive')
+    elif word.endswith('biliti'):
+        word = replace(word, 'biliti', 'ble')
     return word
