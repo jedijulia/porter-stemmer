@@ -17,7 +17,7 @@ def isConsonant(word, i):
 def isVowel(word, i):
     return not(isConsonant(word, i))
 
-# *s
+# *S
 def endsWith(stem, letter):
     if stem.endswith(letter):
         return True 
@@ -215,3 +215,48 @@ def step3(word):
     elif word.endswith('ness'):
         word = replace(word, 'ness', '')
     return word   
+
+def step4(word):
+    if word.endswith('al'):
+        word = replaceM1(word, 'al', '')
+    elif word.endswith('ance'):
+        word = replaceM1(word, 'ance', '')
+    elif word.endswith('ence'):
+        word = replaceM1(word, 'ence', '')
+    elif word.endswith('er'):
+        word = replaceM1(word, 'er', '')
+    elif word.endswith('ic'):
+        word = replaceM1(word, 'ic', '')
+    elif word.endswith('able'):
+        word = replaceM1(word, 'able', '')
+    elif word.endswith('ible'):
+        word = replaceM1(word, 'ible', '')
+    elif word.endswith('ant'):
+        word = replaceM1(word, 'ant', '')
+    elif word.endswith('ement'):
+        word = replaceM1(word, 'ement', '')
+    elif word.endswith('ment'):
+        word = replaceM1(word, 'ment', '')
+    elif word.endswith('ent'):
+        word = replaceM1(word, 'ent', '')
+    elif word.endswith('ou'):
+        word = replaceM1(word, 'ou', '')
+    elif word.endswith('ism'):
+        word = replaceM1(word, 'ism', '')
+    elif word.endswith('ate'):
+        word = replaceM1(word, 'ate', '')
+    elif word.endswith('iti'):
+        word = replaceM1(word, 'iti', '')
+    elif word.endswith('ous'):
+        word = replaceM1(word, 'ous', '')
+    elif word.endswith('ive'):
+        word = replaceM1(word, 'ive', '')
+    elif word.endswith('ize'):
+        word = replaceM1(word, 'ize', '')
+    elif word.endswith('ion'):
+        result = word.rfind('ion')
+        base = word[:result]
+        if getM(base) > 1 and (endsWith(base, 's') or endsWith(base, 't')):
+            word = base
+        word = replaceM1(word, '', '')
+    return word
