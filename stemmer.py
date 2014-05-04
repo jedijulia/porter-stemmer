@@ -260,3 +260,12 @@ def step4(word):
             word = base
         word = replaceM1(word, '', '')
     return word
+
+def step5a(word):
+    if word.endswith('e'):
+        base = word[:-1]
+        if getM(base) > 1:
+            word = base
+        elif getM(base) == 1 and not cvc(base):
+            word = base
+    return word
