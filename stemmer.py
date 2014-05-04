@@ -269,3 +269,8 @@ def step5a(word):
         elif getM(base) == 1 and not cvc(base):
             word = base
     return word
+
+def step5b(word):
+    if getM(word) > 1 and doubleCons(word) and endsWith(word, 'l'):
+        word = word[:-1]
+    return word
