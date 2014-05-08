@@ -89,6 +89,12 @@ class PorterStemmer:
     def replace(self, orig, rem, rep):
         result = orig.rfind(rem)
         base = orig[:result]
+        replaced = base + rep
+        return replaced            
+
+    def replaceM0(self, orig, rem, rep):
+        result = orig.rfind(rem)
+        base = orig[:result]
         if self.getM(base) > 0:
             replaced = base + rep
             return replaced
@@ -106,17 +112,13 @@ class PorterStemmer:
 
     def step1a(self, word):
         if word.endswith('sses'):
-            word = word.rstrip('sses') 
-            #e removed by rstrip
-            word += 'ess' 
+            word = self.replace(word, 'sses', 'ss')
         elif word.endswith('ies'):
-            word = word.rstrip('ies') 
-            word += 'i'
+            word = self.replace(word, 'ies', 'i')
         elif word.endswith('ss'):
-            word = word.rstrip('ss') 
-            word += 'ss'
+            word = self.replace(word, 'ss', 'ss')
         elif word.endswith('s'):
-            word = word.rstrip('s')
+            word = self.replace(word, 's', '')
         else:
             pass
         return word
@@ -124,17 +126,20 @@ class PorterStemmer:
     def step1b(self, word):
         flag = False
         if word.endswith('eed'):
-            base = word.rstrip('eed')
+            result = word.rfind('eed')
+            base = word[:result]
             if self.getM(base) > 0:
                 word = base
                 word += 'ee'
         elif word.endswith('ed'):
-            base = word.rstrip('ed')
+            result = word.rfind('ed')
+            base = word[:result]
             if self.containsVowel(base):
                 word = base
                 flag = True
         elif word.endswith('ing'):
-            base = word.rstrip('ing')
+            result = word.rfind('ing')
+            base = word[:result]
             if self.containsVowel(base):
                 word = base
                 flag = True
@@ -153,7 +158,8 @@ class PorterStemmer:
 
     def step1c(self, word):
         if word.endswith('y'):
-            base = word.rstrip('y')
+            result = word.rfind('y')
+            base = word[:result]
             if self.containsVowel(base):
                 word = base
                 word += 'i'
@@ -161,60 +167,60 @@ class PorterStemmer:
 
     def step2(self, word):
         if word.endswith('ational'):
-            word = self.replace(word, 'ational', 'ate')
+            word = self.replaceM0(word, 'ational', 'ate')
         elif word.endswith('tional'):
-            word = self.replace(word, 'tional', 'tion')
+            word = self.replaceM0(word, 'tional', 'tion')
         elif word.endswith('enci'):
-            word = self.replace(word, 'enci', 'ence')
+            word = self.replaceM0(word, 'enci', 'ence')
         elif word.endswith('anci'):
-            word = self.replace(word, 'anci', 'ance')
+            word = self.replaceM0(word, 'anci', 'ance')
         elif word.endswith('izer'):
-            word = self.replace(word, 'izer', 'ize')
+            word = self.replaceM0(word, 'izer', 'ize')
         elif word.endswith('abli'):
-            word = self.replace(word, 'abli', 'able')
+            word = self.replaceM0(word, 'abli', 'able')
         elif word.endswith('alli'):
-            word = self.replace(word, 'alli', 'al')
+            word = self.replaceM0(word, 'alli', 'al')
         elif word.endswith('entli'):
-            word = self.replace(word, 'entli', 'ent')
+            word = self.replaceM0(word, 'entli', 'ent')
         elif word.endswith('eli'):
-            word = self.replace(word, 'eli', 'e')
+            word = self.replaceM0(word, 'eli', 'e')
         elif word.endswith('ousli'):
-            word = self.replace(word, 'ousli', 'ous')
+            word = self.replaceM0(word, 'ousli', 'ous')
         elif word.endswith('ization'):
-            word = self.replace(word, 'ization', 'ize')
+            word = self.replaceM0(word, 'ization', 'ize')
         elif word.endswith('ation'):
-            word = self.replace(word, 'ation', 'ate')
+            word = self.replaceM0(word, 'ation', 'ate')
         elif word.endswith('ator'):
-            word = self.replace(word, 'ator', 'ate')
+            word = self.replaceM0(word, 'ator', 'ate')
         elif word.endswith('alism'):
-            word = self.replace(word, 'alism', 'al')
+            word = self.replaceM0(word, 'alism', 'al')
         elif word.endswith('iveness'):
-            word = self.replace(word, 'iveness', 'ive')
+            word = self.replaceM0(word, 'iveness', 'ive')
         elif word.endswith('fulness'):
-            word = self.replace(word, 'fulness', 'ful')
+            word = self.replaceM0(word, 'fulness', 'ful')
         elif word.endswith('ousness'):
-            word = self.replace(word, 'ousness', 'ous')
+            word = self.replaceM0(word, 'ousness', 'ous')
         elif word.endswith('aliti'):
-            word = self.replace(word, 'aliti', 'al')
+            word = self.replaceM0(word, 'aliti', 'al')
         elif word.endswith('iviti'):
-            word = self.replace(word, 'iviti', 'ive')
+            word = self.replaceM0(word, 'iviti', 'ive')
         elif word.endswith('biliti'):
-            word = self.replace(word, 'biliti', 'ble')
+            word = self.replaceM0(word, 'biliti', 'ble')
         return word
 
     def step3(self, word):
         if word.endswith('icate'):
-            word = self.replace(word, 'icate', 'ic')
+            word = self.replaceM0(word, 'icate', 'ic')
         elif word.endswith('ative'):
-            word = self.replace(word, 'ative', '')
+            word = self.replaceM0(word, 'ative', '')
         elif word.endswith('alize'):
-            word = self.replace(word, 'alize', 'al')
+            word = self.replaceM0(word, 'alize', 'al')
         elif word.endswith('iciti'):
-            word = self.replace(word, 'iciti', 'ic')
+            word = self.replaceM0(word, 'iciti', 'ic')
         elif word.endswith('ful'):
-            word = self.replace(word, 'ful', '')
+            word = self.replaceM0(word, 'ful', '')
         elif word.endswith('ness'):
-            word = self.replace(word, 'ness', '')
+            word = self.replaceM0(word, 'ness', '')
         return word   
 
     def step4(self, word):
