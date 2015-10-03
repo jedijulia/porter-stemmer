@@ -1,6 +1,7 @@
 class PorterStemmer:
     def isCons(self, letter):
-        if letter == 'a' or letter == 'e' or letter == 'i' or letter == 'o' or letter == 'u':
+        if letter == 'a' or letter == 'e' or letter == 'i' or letter == 'o'
+        or letter == 'u':
             return False
         else:
             return True
@@ -21,8 +22,8 @@ class PorterStemmer:
     # *S
     def endsWith(self, stem, letter):
         if stem.endswith(letter):
-            return True 
-        else: 
+            return True
+        else:
             return False
 
     # *v*
@@ -30,14 +31,14 @@ class PorterStemmer:
         for i in stem:
             if not self.isCons(i):
                 return True
-        return False  
+        return False
 
     # *d
     def doubleCons(self, stem):
         if len(stem) >= 2:
             if self.isConsonant(stem, -1) and self.isConsonant(stem, -2):
                 return True
-            else: 
+            else:
                 return False
         else:
             return False
@@ -45,7 +46,7 @@ class PorterStemmer:
     def getForm(self, word):
         form = []
         formStr = ''
-        for i in range (len(word)):
+        for i in range(len(word)):
             if self.isConsonant(word, i):
                 if i != 0:
                     prev = form[-1]
@@ -76,21 +77,22 @@ class PorterStemmer:
             s = -2
             t = -1
             third = word[t]
-            if self.isConsonant(word, f) and self.isVowel(word, s) and self.isConsonant(word, t):
+            if self.isConsonant(word, f) and self.isVowel(word, s)
+            and self.isConsonant(word, t):
                 if third != 'w' and third != 'x' and third != 'y':
                     return True
                 else:
                     return False
             else:
                 return False
-        else: 
+        else:
             return False
 
     def replace(self, orig, rem, rep):
         result = orig.rfind(rem)
         base = orig[:result]
         replaced = base + rep
-        return replaced            
+        return replaced
 
     def replaceM0(self, orig, rem, rep):
         result = orig.rfind(rem)
@@ -122,7 +124,7 @@ class PorterStemmer:
         else:
             pass
         return word
-        
+
     def step1b(self, word):
         flag = False
         if word.endswith('eed'):
@@ -144,9 +146,11 @@ class PorterStemmer:
                 word = base
                 flag = True
         if flag:
-            if word.endswith('at') or word.endswith('bl') or word.endswith('iz'):
+            if word.endswith('at') or word.endswith('bl')
+            or word.endswith('iz'):
                 word += 'e'
-            elif self.doubleCons(word) and not self.endsWith(word, 'l') and not self.endsWith(word, 's') and not self.endsWith(word, 'z'):
+            elif self.doubleCons(word) and not self.endsWith(word, 'l')
+            and not self.endsWith(word, 's') and not self.endsWith(word, 'z'):
                 word = word[:-1]
             elif self.getM(word) == 1 and self.cvc(word):
                 word += 'e'
@@ -221,7 +225,7 @@ class PorterStemmer:
             word = self.replaceM0(word, 'ful', '')
         elif word.endswith('ness'):
             word = self.replaceM0(word, 'ness', '')
-        return word   
+        return word
 
     def step4(self, word):
         if word.endswith('al'):
@@ -263,7 +267,8 @@ class PorterStemmer:
         elif word.endswith('ion'):
             result = word.rfind('ion')
             base = word[:result]
-            if self.getM(base) > 1 and (self.endsWith(base, 's') or self.endsWith(base, 't')):
+            if self.getM(base) > 1
+            and (self.endsWith(base, 's') or self.endsWith(base, 't')):
                 word = base
             word = self.replaceM1(word, '', '')
         return word
@@ -278,7 +283,8 @@ class PorterStemmer:
         return word
 
     def step5b(self, word):
-        if self.getM(word) > 1 and self.doubleCons(word) and self.endsWith(word, 'l'):
+        if self.getM(word) > 1 and self.doubleCons(word)
+        and self.endsWith(word, 'l'):
             word = word[:-1]
         return word
 
