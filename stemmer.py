@@ -1,12 +1,14 @@
 class PorterStemmer:
-    def isCons(self, letter):
+    def isCons(self, letter):#function that returns true if a letter is a consonant otherwise false
         if letter == 'a' or letter == 'e' or letter == 'i' or letter == 'o'
         or letter == 'u':
             return False
         else:
             return True
 
-    def isConsonant(self, word, i):
+    def isConsonant(self, word, i):#function that returns true only if the letter at i th position 
+        #in the argument 'word' is a consonant.But if the letter is 'y' and the letter at i-1 th position 
+        #is also a consonant, then it returns false.
         letter = word[i]
         if self.isCons(letter):
             if letter == 'y' and isCons(word[i-1]):
@@ -16,25 +18,26 @@ class PorterStemmer:
         else:
             return False
 
-    def isVowel(self, word, i):
+    def isVowel(self, word, i):#function that returns true if the letter at i th position in the argument 'word'
+        #is a vowel
         return not(isConsonant(word, i))
 
     # *S
-    def endsWith(self, stem, letter):
+    def endsWith(self, stem, letter):#returns true if the word 'stem' ends with 'letter' 
         if stem.endswith(letter):
             return True
         else:
             return False
 
     # *v*
-    def containsVowel(self, stem):
+    def containsVowel(self, stem):#returns true if the word 'stem' contains a vowel
         for i in stem:
             if not self.isCons(i):
                 return True
         return False
 
     # *d
-    def doubleCons(self, stem):
+    def doubleCons(self, stem):#returns true if the word 'stem' ends with 2 consonants
         if len(stem) >= 2:
             if self.isConsonant(stem, -1) and self.isConsonant(stem, -2):
                 return True
@@ -44,6 +47,15 @@ class PorterStemmer:
             return False
 
     def getForm(self, word):
+        #This function takes a word as an input, and checks for vowel and consonant sequences in that word.
+        #vowel sequence is denoted by V and consonant sequences by C
+        #For example, the word 'balloon' can be divived into following sequences:
+        #'b' : C
+        #'a' : V
+        #'ll': C
+        #'oo': V
+        #'n' : C
+        #So form = [C,V,C,V,C] and formstr = CVCVC
         form = []
         formStr = ''
         for i in range(len(word)):
@@ -66,12 +78,17 @@ class PorterStemmer:
         return formStr
 
     def getM(self, word):
+        #returns value of M which is equal to number of 'VC' in formstr
+        #So in above example of word 'balloon', we have 2 'VC'
+
         form = self.getForm(word)
         m = form.count('VC')
         return m
 
     # *o
     def cvc(self, word):
+        #returns true if the last 3 letters of the word are of the following pattern: consonant,vowel,consonant
+        #but if the last word is either 'w','x' or 'y', it returns false
         if len(word) >= 3:
             f = -3
             s = -2
@@ -89,12 +106,20 @@ class PorterStemmer:
             return False
 
     def replace(self, orig, rem, rep):
+        #this function checks if string 'orig' ends with 'rem' and
+        #replaces 'rem' by the substring 'rep'. The resulting string 'replaced'
+        #is returned.
+
         result = orig.rfind(rem)
         base = orig[:result]
         replaced = base + rep
         return replaced
 
     def replaceM0(self, orig, rem, rep):
+        #same as the function replace(), except that it checks the value of M for the 
+        #base string. If it is >0 , it replaces 'rem' by 'rep', otherwise it returns the
+        #original string
+
         result = orig.rfind(rem)
         base = orig[:result]
         if self.getM(base) > 0:
@@ -104,6 +129,9 @@ class PorterStemmer:
             return orig
 
     def replaceM1(self, orig, rem, rep):
+        #same as replaceM0(), except that it replaces 'rem' by 'rep', only when M>1 for
+        #the base string
+
         result = orig.rfind(rem)
         base = orig[:result]
         if self.getM(base) > 1:
@@ -113,6 +141,17 @@ class PorterStemmer:
             return orig
 
     def step1a(self, word):
+        #In a given word, this function replaces 'sses' by 'ss', 'ies' by 'i',
+        #'ss' by 'ss' and 's' by ''
+
+        """step1a() gets rid of plurals. e.g.
+
+           caresses  ->  caress
+           ponies    ->  poni
+           ties      ->  ti
+           caress    ->  caress
+           cats      ->  cat
+        """
         if word.endswith('sses'):
             word = self.replace(word, 'sses', 'ss')
         elif word.endswith('ies'):
@@ -126,6 +165,27 @@ class PorterStemmer:
         return word
 
     def step1b(self, word):
+        #this function checks if a word ends with 'eed','ed' or 'ing' and replces these substrings by
+        #'ee','' and ''. If after the replacements in case of 'ed' and 'ing', the resulting word
+        # -> ends with 'at','bl' or 'iz' : add 'e' to the end of the word
+        # -> ends with 2 consonants and its last letter isn't 'l','s' or 'z': remove last letter of the word
+        # -> has 1 as value of M and the cvc(word) returns true : add 'e' to the end of the word
+        
+        '''
+        step1b gets rid of -eed -ed or -ing. e.g.
+
+        feed      ->  feed
+           agreed    ->  agree
+           disabled  ->  disable
+
+           matting   ->  mat
+           mating    ->  mate
+           meeting   ->  meet
+           milling   ->  mill
+           messing   ->  mess
+
+           meetings  ->  meet
+        '''
         flag = False
         if word.endswith('eed'):
             result = word.rfind('eed')
@@ -161,6 +221,10 @@ class PorterStemmer:
         return word
 
     def step1c(self, word):
+        #In words ending with 'y' this function replaces 'y' by 'i'
+        
+        """step1c() turns terminal y to i when there is another vowel in the stem."""
+
         if word.endswith('y'):
             result = word.rfind('y')
             base = word[:result]
@@ -170,6 +234,13 @@ class PorterStemmer:
         return word
 
     def step2(self, word):
+        #this function checks the value of M, and replaces the suffixes accordingly
+        
+        """step2() maps double suffices to single ones.
+        so -ization ( = -ize plus -ation) maps to -ize etc. note that the
+        string before the suffix must give m() > 0.
+        """
+
         if word.endswith('ational'):
             word = self.replaceM0(word, 'ational', 'ate')
         elif word.endswith('tional'):
@@ -213,6 +284,10 @@ class PorterStemmer:
         return word
 
     def step3(self, word):
+        #this function checks the value of M, and replaces the suffixes accordingly
+        
+        """step3() dels with -ic-, -full, -ness etc. similar strategy to step2."""
+
         if word.endswith('icate'):
             word = self.replaceM0(word, 'icate', 'ic')
         elif word.endswith('ative'):
@@ -228,6 +303,10 @@ class PorterStemmer:
         return word
 
     def step4(self, word):
+        #this function checks the value of M, and replaces the suffixes accordingly
+        
+        """step4() takes off -ant, -ence etc., in context <c>vcvc<v>{meaning, M >1 for the word}."""
+
         if word.endswith('al'):
             word = self.replaceM1(word, 'al', '')
         elif word.endswith('ance'):
@@ -274,6 +353,13 @@ class PorterStemmer:
         return word
 
     def step5a(self, word):
+        #this function checks if the word ends with 'e'. If it does, it checks the value of
+        #M for the base word. If M>1, OR, If M = 1 and cvc(base) is false, it simply removes 'e'
+        #ending.
+        
+        """step5() removes a final -e if m() > 1.
+        """
+
         if word.endswith('e'):
             base = word[:-1]
             if self.getM(base) > 1:
@@ -283,12 +369,18 @@ class PorterStemmer:
         return word
 
     def step5b(self, word):
+        #this function checks if the value of M for the word is greater than 1 and it ends with 2 consonants
+        # and it ends with 'l', it removes 'l'
+        
+        #step5b changes -ll to -l if m() > 1
         if self.getM(word) > 1 and self.doubleCons(word)
         and self.endsWith(word, 'l'):
             word = word[:-1]
         return word
 
     def stem(self, word):
+        #steps to be followed for stemming according to the porter stemmer :)
+
         word = self.step1a(word)
         word = self.step1b(word)
         word = self.step1c(word)
